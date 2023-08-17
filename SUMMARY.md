@@ -51,7 +51,3 @@
 * [Git](undefined-1/git.md)
 * [기타](undefined-1/undefined.md)
 * [미정리 내용](undefined-1/undefined-1.md)
-
-***
-
-* [README](<README (1).md>)
