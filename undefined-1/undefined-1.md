@@ -16,6 +16,10 @@
 
 {% embed url="https://findmypiece.tistory.com/289" %}
 
+{% embed url="https://www.eficode.com/blog/war-of-the-ci-servers-gitlab-vs-github-vs-jenkins" %}
+
+
+
 Spring : Filter vs Interceptor
 
 {% embed url="https://minkukjo.github.io/framework/2020/12/18/Spring-142/" %}
