@@ -149,11 +149,68 @@ public FilterRegistrationBean<TenantFilter> tenantFilterRegistration(TenantFilte
 
 
 
+## Exception Handling
+
+<table data-card-size="large" data-view="cards"><thead><tr><th></th><th></th><th></th></tr></thead><tbody><tr><td></td><td><img src="../../../../.gitbook/assets/image (131).png" alt=""></td><td></td></tr><tr><td></td><td><p><code>ExceptionTranslationFilter</code> 는 <code>FilterChainProxy</code> 에 등록할 수 있는 <code>SecurityFilter</code>.</p><p><code>AccessDeniedException</code> 과 <code>AuthenticationException</code> 을 HTTP 응답으로 변환</p></td><td><p></p><p>그림에서 …</p><ol><li><code>ExceptionTranslationFilter</code> 는 <code>FilterChain.doFilter()</code> 호출</li><li><p>인증되지 않은 사용자거나, <code>AuthenticationException</code>(인증 에러)인 경우, 인증을 시작</p><ul><li><code>SecurityContextHolder</code> 삭제</li><li><code>HttpServletRequest</code> 는 인증이 성공했을 때, 재사용 할 수 있도록 저장 (<code>RequestCache</code>)</li><li><code>AuthenticationEntryPoint</code> 는 클라이이언트로부터 자격 증명을 요청하는 데 사용 (리디렉션 등)</li></ul></li><li><code>AccessDeniedException</code> (엑세스 거부)의 경우, <code>AccessDeniedHandler</code> 에 의해 처리</li></ol><p></p><p>cf. <code>ExceptionTranslationFilter</code>는 <code>AccessDeniedException</code>, <code>AuthenticationException</code> 예외에만 처리. 그 외엔 동작 안함.</p></td></tr></tbody></table>
+
+<details>
+
+<summary>ExceptionTranslationFilter() : 코드로 보자면 이런 느낌…</summary>
+
+```java
+try {
+	filterChain.doFilter(request, response);
+} catch (AccessDeniedException | AuthenticationException ex) {
+	if (!authenticated || ex instanceof AuthenticationException) {
+		startAuthentication();
+	} else {
+		accessDenied();
+	}
+}
+```
+
+</details>
 
 
 
+## 인증 요청 (임시) 저장
+
+인증 처리 후 요청에 대한 처리를 하기 위해, `RequestCache` 에 HttpServlet 을 임시 저장한다 (위 ExceptionHandling 구조에서 확인 가능)
+
+이는 인증이 완료된 요청에 대해 기존에 사용하던 페이지로 돌아가게 하는 데에 사용
+
+ex. 로그인이 필요한 페이지에서 로그인이 처리된 후, 그 페이지로 되돌아갈 때
+
+→ 무조건 홈페이지로 돌아가게 하기 위해서는 `nullRequestCache` 를 사용하면 된다
+
+```java
+// 기본적으로 HttpSessionRequestCache 를 사용
+// 아래 코드는 continue 매개변수를 통해 동일 세션인지 아닌지를 판별
+@Bean
+DefaultSecurityFilterChain springSecurity(HttpSecurity http) throws Exception {
+	HttpSessionRequestCache requestCache = new HttpSessionRequestCache();
+	requestCache.setMatchingRequestParameterName("continue");
+	http
+		// ...
+		.requestCache((cache) -> cache
+			.requestCache(requestCache)
+			// .requestCache(nullRequestCache) 를 사용하면 세션에 저장하지 않음
+		);
+	return http.build();
+}
+```
+
+`RequestCacheAwareFilter` 를 사용하여 `RequestCache` 를 편하게 사용이 가능하다
 
 
+
+## Logging
+
+401, 403 에러에 대해 로깅 또는 디버깅을 위해 아래 properties 를 추가할 수 있음
+
+```properties
+logging.level.org.springframework.security=TRACE
+```
 
 
 
