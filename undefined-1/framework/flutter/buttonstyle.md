@@ -42,9 +42,9 @@ ButtonStyle appbarButtonStyle() {
 
 
 
-| 모양                                            | 코드                                                                                                    |
-| --------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| ![](<../../../.gitbook/assets/image (4).png>) | <ol><li>ElevatedButton()</li><li>TextButton()</li><li>OutlinedButton()</li><li>IconButton()</li></ol> |
+| 모양                                                | 코드                                                                                                    |
+| ------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| ![](<../../../.gitbook/assets/image (4) (1).png>) | <ol><li>ElevatedButton()</li><li>TextButton()</li><li>OutlinedButton()</li><li>IconButton()</li></ol> |
 
 1.  ElevatedButton
 
