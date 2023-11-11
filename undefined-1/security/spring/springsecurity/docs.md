@@ -149,7 +149,7 @@ public FilterRegistrationBean<TenantFilter> tenantFilterRegistration(TenantFilte
 
 
 
-## Exception Handling
+### Exception Handling
 
 <table data-card-size="large" data-view="cards"><thead><tr><th></th><th></th><th></th></tr></thead><tbody><tr><td></td><td><img src="../../../../.gitbook/assets/image (131).png" alt=""></td><td></td></tr><tr><td></td><td><p><code>ExceptionTranslationFilter</code> 는 <code>FilterChainProxy</code> 에 등록할 수 있는 <code>SecurityFilter</code>.</p><p><code>AccessDeniedException</code> 과 <code>AuthenticationException</code> 을 HTTP 응답으로 변환</p></td><td><p></p><p>그림에서 …</p><ol><li><code>ExceptionTranslationFilter</code> 는 <code>FilterChain.doFilter()</code> 호출</li><li><p>인증되지 않은 사용자거나, <code>AuthenticationException</code>(인증 에러)인 경우, 인증을 시작</p><ul><li><code>SecurityContextHolder</code> 삭제</li><li><code>HttpServletRequest</code> 는 인증이 성공했을 때, 재사용 할 수 있도록 저장 (<code>RequestCache</code>)</li><li><code>AuthenticationEntryPoint</code> 는 클라이이언트로부터 자격 증명을 요청하는 데 사용 (리디렉션 등)</li></ul></li><li><code>AccessDeniedException</code> (엑세스 거부)의 경우, <code>AccessDeniedHandler</code> 에 의해 처리</li></ol><p></p><p>cf. <code>ExceptionTranslationFilter</code>는 <code>AccessDeniedException</code>, <code>AuthenticationException</code> 예외에만 처리. 그 외엔 동작 안함.</p></td></tr></tbody></table>
 
@@ -173,7 +173,7 @@ try {
 
 
 
-## 인증 요청 (임시) 저장
+### 인증 요청 (임시) 저장
 
 인증 처리 후 요청에 대한 처리를 하기 위해, `RequestCache` 에 HttpServlet 을 임시 저장한다 (위 ExceptionHandling 구조에서 확인 가능)
 
@@ -204,13 +204,71 @@ DefaultSecurityFilterChain springSecurity(HttpSecurity http) throws Exception {
 
 
 
-## Logging
+### Logging
 
 401, 403 에러에 대해 로깅 또는 디버깅을 위해 아래 properties 를 추가할 수 있음
 
 ```properties
 logging.level.org.springframework.security=TRACE
 ```
+
+
+
+## Authentication (인증)
+
+### Authentication Architecture : 주요 아키텍처
+
+* `SecurityContextHolder` : 인증된 사용자에 대한 정보를 저장
+* `SecurityContext` : 위의 `SecurityContextHolder` 에서 받아올 수 있으며, 인증된 사용자의 `Authentication` 정보를 가지고 있음
+* `Authentication` : 접근 주체에 대한 정보. `SecurityContext` 에 저장되며, 실제 `Authentication` 을 만들고 인증을 처리하는 건 `AuthenticationManager` 에서 담당
+* `GrantedAuthority` : 인증 주체에 부여된 권한 (role, scopes 등)
+* `AuthenticationManager` : Spring Security Filter 가 실제 인증 처리를 진행하는 부분 (`Authentication` 부분 참고)
+* `ProviderManager` : 가장 일반적인 `AuthenticationManager` 의 구현체
+* `AuthenticationProvider` : 특정 인증 처리를 위한 `ProviderManager`
+* Request Credenticals with `AuthenticationEntryPoint` : 로그인 페이지 redirect, `WWW-Authenticate` 응답 등에 사용하는 클라이언트의 자격증명 요청
+* `AbstractAuthenticationProcessingFilter` : 인증을 위한 기본 필터. 고수준의 인증 flow 와 여러 처리가 동작할 수 있도록 지원
+
+
+
+### SecurityContextHolder
+
+![](<../../../../.gitbook/assets/image (132).png>)
+
+Spring Security 가 가지는 인증된 사용자에 대한 정보. Spring Security 는 `SecurityContextHolder` 가 어떻게 채워지는지 관심없으며, 값이 저장되어 있다면 인증된 사용자로 판단
+
+{% code lineNumbers="true" %}
+```kotlin
+val context: SecurityContext = SecurityContextHolder.createEmptyContext()
+val authentication: Authentication = TestingAuthenticationToken("username", "password", "ROLE_USER")
+context.authentication = authentication
+
+SecurityContextHolder.setContext(context)
+```
+{% endcode %}
+
+* line 1 : 빈 `SecurityContext` 를 생성 → 여러 쓰레드의 영향을 피하기 위해 새로운 SecurityContext 를 생성하는 것이 좋다
+* line 2 : `Authentication` 생성. 일반적으로는 `UsernamePasswordAuthenticationToken(userDetails, password, authorities)` 를 사용.
+
+```kotlin
+val context = SecurityContextHolder.getContext()
+val authentication = context.authentication
+val username = authentication.name
+val principal = authentication.principal
+val authorities = authentication.authorities
+```
+
+기본적으로 `SecurityContextHolder` 는 `ThreadLocal` 을 사용하여 `SecurityContext` 를 저장하여 관리하기에, 동일 쓰레드에서 `SecurityContext` 는 모두 동일.
+
+request 처리 후에 `FilterChainProxy` 에 의해 `SecurityContext` 는 안전하게 삭제됨을 보장
+
+기본적으로는 `ThreadLocal` 처리지만, 시작 옵션을 통해 `SecurityContextHolder` 의 `SecurityContext` 저장 방법을 정의할 수도 있음
+
+→ 단일 App : SecurityContextHolder.MODE\_GLOBAL\
+→ 다중 App 의 보안 쓰레드에서 처리 : SecurityContextHolder.MODE\_INHERITABLETHREADLOCAL
+
+
+
+### Authentication (인증)
 
 
 
