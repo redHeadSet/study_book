@@ -232,7 +232,7 @@ logging.level.org.springframework.security=TRACE
 
 ### SecurityContextHolder
 
-![](<../../../../.gitbook/assets/image (132).png>)
+![](<../../../../.gitbook/assets/image (132) (1).png>)
 
 Spring Security 가 가지는 인증된 사용자에 대한 정보. Spring Security 는 `SecurityContextHolder` 가 어떻게 채워지는지 관심없으며, 값이 저장되어 있다면 인증된 사용자로 판단
 

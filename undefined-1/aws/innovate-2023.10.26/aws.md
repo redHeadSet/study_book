@@ -24,7 +24,7 @@
    1. 데이터 매우 많은 경우
 3. 특정 국가나 규정에 의해서
 
-<figure><img src="../../../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (132).png" alt=""><figcaption></figcaption></figure>
 
 Outposts 온프레미스에서 인프라와 서비스를 제공
 
@@ -36,13 +36,13 @@ Wavelength sms 모바일과 연결될 때 추가 넹트워크 홉을 제공, 5G 
 
 
 
-<figure><img src="../../../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (1) (2).png" alt=""><figcaption></figcaption></figure>
 
 컨테이너를 이용하여 가장 간편하게 완전히 동일한 앱을 운영하도록 지원
 
-<figure><img src="../../../.gitbook/assets/image (2).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (2) (2).png" alt=""><figcaption></figcaption></figure>
 
-<figure><img src="../../../.gitbook/assets/image (4).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (4) (2).png" alt=""><figcaption></figcaption></figure>
 
 오케스트레이터가 거의 반드시 필요 : 쿠버네티스 등
 
@@ -50,7 +50,7 @@ Wavelength sms 모바일과 연결될 때 추가 넹트워크 홉을 제공, 5G 
 
 ## 옵션
 
-<figure><img src="../../../.gitbook/assets/image (5).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (5) (2).png" alt=""><figcaption></figcaption></figure>
 
 outpost 위에서 aws 서비스가 직접 실행됨
 
@@ -68,11 +68,11 @@ ECS Anywhere
 
 
 
-<figure><img src="../../../.gitbook/assets/image (6).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (6) (2).png" alt=""><figcaption></figcaption></figure>
 
 
 
-<figure><img src="../../../.gitbook/assets/image (7).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/image (7) (2).png" alt=""><figcaption></figcaption></figure>
 
 모든 컨테이너화 된 앱의 80% 이상이 EKS 에서 돌아감
 

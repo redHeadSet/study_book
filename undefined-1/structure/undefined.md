@@ -37,7 +37,7 @@ description: 가상 면접 사례로 배우는 대규모 시스템 설계 기초
 * 맺어진 연결은 영구적이며, 양방향 메시지 전달 가능
 * 서버의 연결 관리가 효율적으로 되어야 함
 
-<figure><img src="../../.gitbook/assets/image (9).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (9) (1).png" alt=""><figcaption></figcaption></figure>
 
 ## 설계
 
