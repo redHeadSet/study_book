@@ -35,12 +35,6 @@
 > 1. 주도성 (Proactivity): 사용자가 매번 명령(프롬프트)하지 않아도 에이전트가 이벤트를 모니터링하고 스스로 알아서 작업을 수행하는 것.
 > 2. 독립성 (Independence): 'Chronicle'이나 'Computer Use' 기능을 통해 사람의 밀착 감시 없이도 독립적으로 오랜 시간 과제를 완수하는 것.
 > 3. 병렬화 (Parallelization): 로컬 컴퓨터의 한계를 넘어 클라우드 환경(Dev Boxes)을 통해 수많은 에이전트를 동시에 병렬로 실행하는 것.
->
-> 관련 영상 링크:
->
-> * [OpenAI @ Replay 2026 | OpenAI는 Codex로 개발 방식을 어떻게 바꾸고 있을까요?](http://www.youtube.com/watch?v=H95cVsPJLcw)
-
-
 
 
 
